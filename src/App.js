@@ -34,7 +34,7 @@ class App extends React.Component {
               id: userDoc.id,
               ...userDoc.data()
             }
-          })
+          }, () => console.log(this.state))
         });
       }
     });
