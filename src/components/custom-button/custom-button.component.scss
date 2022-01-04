@@ -29,4 +29,15 @@
       border: none;
     }
   }
+
+  &.reverse {
+    border: none;
+    background-color: white;
+    color: black;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
 }

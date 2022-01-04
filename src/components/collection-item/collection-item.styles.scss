@@ -1,4 +1,5 @@
 .collection-item {
+  position: relative;
   width: 22%;
   display: flex;
   flex-direction: column;
@@ -28,5 +29,25 @@
     .price {
       width: 10%;
     }
+  }
+
+  & .custom-button {
+    display: none;
+    cursor: pointer;
+    width: 80%;
+    opacity: .75;
+    position: absolute;
+    bottom: 50px;
+    z-index: 5;
+    transition: 0.3s;
+  }
+
+  &:hover {
+    .custom-button {
+      display: block;
+      opacity: .85;
+    }
+
+    opacity: .85;
   }
 }
