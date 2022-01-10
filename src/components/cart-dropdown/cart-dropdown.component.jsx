@@ -1,24 +1,42 @@
 import React from 'react';
-import CustomButton from '../custom-button/custom-button.component';
-import CartItem from '../cart-item/cart-item.compoenent';
-
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { useNavigate } from 'react-router-dom';
 
-import './cart-dropdown.component.scss';
+import CustomButton from '../custom-button/custom-button.component';
+import CartItem from '../cart-item/cart-item.component';
+import { selectCartItems } from '../../features/cart/cart.selectors';
+import { toggleCartDropdown } from '../../features/cart/cart.actions';
 
-const CartDropdown = ({ cartItems }) => (
-  <div className='cart-dropdown'>
-    {cartItems.length > 0 ? (
-      cartItems.map((item) => <CartItem item={item} />)
-    ) : (
-      <div>No products in cart.</div>
-    )}
-    <CustomButton>SHOP NOW</CustomButton>
-  </div>
-);
+import './cart-dropdown.styles.scss';
 
-const mapStateToProps = ({ cart: { cartItems } }) => ({
-  cartItems,
+const CartDropdown = ({ cartItems, dispatch, toggleCart }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className='cart-dropdown'>
+      <div className='cart-items'>
+        {cartItems.length > 0 ? (
+          cartItems.map((item) => <CartItem key={item.id} item={item} />)
+        ) : (
+          <div>No products in cart.</div>
+        )}
+      </div>
+      <CustomButton
+        onClick={() => {
+          dispatch(toggleCart);
+          navigate('/checkout');
+        }}
+      >
+        SHOP NOW
+      </CustomButton>
+    </div>
+  );
+};
+
+const mapStateToProps = createStructuredSelector({
+  cartItems: selectCartItems,
+  toggleCart: toggleCartDropdown,
 });
 
 export default connect(mapStateToProps)(CartDropdown);

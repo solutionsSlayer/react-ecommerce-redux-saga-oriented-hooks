@@ -21,6 +21,7 @@
         "prettier": {
             "singleQuote": true
         },
+        "no-restricted-globals": ["error", "event", "fdescribe"],
         "semi": ["error", "always"],
         "quotes": ["error", "double"]
     }

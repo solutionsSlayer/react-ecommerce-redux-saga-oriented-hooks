@@ -7,8 +7,7 @@ import { addItem } from '../../features/cart/cart.actions';
 import './collection-item.styles.scss';
 
 const CollectionItem = ({ item, addItem }) => {
-  console.log(item);
-  const { imageUrl, name, price, id } = item;
+  const { imageUrl, name, price } = item;
 
   return (
     <div className='collection-item'>
