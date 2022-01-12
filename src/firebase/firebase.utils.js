@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { getFirestore, getDoc, doc, setDoc } from "firebase/firestore";
+import { getFirestore, getDoc, doc, setDoc, collection, writeBatch } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCR_nJl3EdPI6DA2wD9ekXKIY5R1j3SIFk",
@@ -41,6 +41,36 @@ export const createUserProfileDoc = async (userAuth, additionalData) => {
   }
 
   return userRef;
+}
+
+export const addCollectionAndDocuments = async (collectionKey, documentsToAdd) => {
+  const batch = writeBatch(db);
+
+  documentsToAdd.forEach(docToAdd => {
+    const title = docToAdd.title.toLowerCase()
+    const newDocRef = doc(db, collectionKey, title);
+    batch.set(newDocRef, {...docToAdd});
+  });
+
+  await batch.commit();
+}
+
+export const convertCollectionSnapshotToMap = collection => {
+  const transformedCollections = collection.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    return {
+      id: doc.id,
+      routeName: encodeURI(title.toLowerCase()),
+      title,
+      items
+    }
+  });
+
+  return transformedCollections.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection
+    return accumulator;
+  }, {});
 }
 
 const provider = new GoogleAuthProvider();

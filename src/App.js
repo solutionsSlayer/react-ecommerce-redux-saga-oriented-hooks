@@ -19,7 +19,6 @@ import { selectCurrentUser } from './features/user/user.selectors';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
-
   componentDidMount() {
     const { setCurrentUser } = this.props;
 
@@ -39,7 +38,12 @@ class App extends React.Component {
         console.log(false)
       }
 
+      // const newArr = collectionsToAdd.map(({ title, items }) => ({ title, items }))
+
       setCurrentUser(userAuth);
+
+      // FUNCTION FOR FEED DATABASE WITH PROGRAMMING CODE (Faster than manually in DB)
+      // addCollectionAndDocuments('collections', newArr);
     });
   }
 
