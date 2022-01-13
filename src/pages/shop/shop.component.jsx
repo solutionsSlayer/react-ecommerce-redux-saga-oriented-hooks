@@ -10,25 +10,46 @@ import updateShopCollections from '../../features/shop/shop.actions';
 
 import CollectionOverview from '../../components/collection-overview/collection-overview.component';
 import CollectionPage from '../collection-category/collection-category.component';
+import WithSpinner from '../../components/with-spinner/with-spinner.component';
+
 import { collection, getDocs } from 'firebase/firestore';
 
-class ShopPage extends React.Component {
-  async componentDidMount() {
-    const { updateCollection } = this.props;
+const CollectionOverviewWihSpinner = WithSpinner(CollectionOverview);
+const CollectionPageWihSpinner = WithSpinner(CollectionPage);
 
+class ShopPage extends React.Component {
+  state = {
+    loading: true,
+  };
+
+  async componentDidMount() {
+    console.log(CollectionOverviewWihSpinner);
+    const { updateCollection } = this.props;
     const collectionsRef = collection(db, 'collections');
     const collectionsSnapShot = await getDocs(collectionsRef);
 
     const collections = convertCollectionSnapshotToMap(collectionsSnapShot);
 
-    updateCollection(collections);
+    await updateCollection(collections);
+
+    this.setState({
+      loading: false,
+    });
   }
 
   render() {
+    const { loading } = this.state;
+
     return (
       <Routes>
-        <Route index element={<CollectionOverview />} />
-        <Route path=':collectionId' element={<CollectionPage />} />
+        <Route
+          index
+          element={<CollectionOverviewWihSpinner isLoading={loading} />}
+        />
+        <Route
+          path=':collectionId'
+          element={<CollectionPageWihSpinner isLoading={loading} />}
+        />
       </Routes>
     );
   }
