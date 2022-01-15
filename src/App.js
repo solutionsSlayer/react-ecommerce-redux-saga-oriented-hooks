@@ -14,8 +14,12 @@ import Header from './components/header/header.component';
 import { auth, createUserProfileDoc } from './firebase/firebase.utils';
 import { onSnapshot } from "firebase/firestore";
 
-import { setCurrentUser } from './features/user/user.actions';
-import { selectCurrentUser } from './features/user/user.selectors';
+import { setCurrentUser } from './redux/user/user.actions';
+import { selectCurrentUser } from './redux/user/user.selectors';
+
+const RestrictedSignIn = ({ currentUser }) => {
+  return currentUser ? <Navigate to="/" /> : <SignInAndSignUpPage /> 
+}
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -52,6 +56,10 @@ class App extends React.Component {
   }
 
   render() {
+    const { currentUser } = this.props;
+
+    console.log('CURRENT USER', currentUser);
+
     return (
       <div>
         <Header />
@@ -59,7 +67,7 @@ class App extends React.Component {
           <Route index path='/' element={<HomePage />} />
           <Route path='/shop/*' element={<ShopPage />} />
           <Route path='/checkout' element={<CheckoutPage />} />
-          <Route path='/signin' render={()=> this.props.currentUser ? (<Navigate to='/' />) : (<SignInAndSignUpPage />)} />
+          <Route path='/signin' element={<RestrictedSignIn currentUser={currentUser} />} />
         </Routes>
       </div>
     );
