@@ -10,7 +10,7 @@ function* clearCartOnSignOut() {
 
 // WATCHERS
 function* onSignOutSuccess() {
-    takeLatest(userActionTypes.USER_LOGOUT_SUCCESS, clearCartOnSignOut)
+    yield takeLatest(userActionTypes.USER_LOGOUT_SUCCESS, clearCartOnSignOut)
 }
 
 

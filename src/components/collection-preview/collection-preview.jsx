@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import CollectionItem from '../collection-item/collection-item.component';
 import './collection-preview.styles.scss';
 

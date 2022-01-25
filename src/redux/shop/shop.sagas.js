@@ -4,7 +4,7 @@ import { shopActionTypes } from './shop.types';
 import { collection, getDocs } from 'firebase/firestore';
 import { db, convertCollectionSnapshotToMap } from '../../firebase/firebase.utils';
 
-import { fetchCollectionSuccess, fetchCollectionFailure, fetchCollectionStart } from './shop.actions';
+import { fetchCollectionSuccess, fetchCollectionFailure } from './shop.actions';
 
 // WORKERS
 function* fetchCollectionsAsync() {

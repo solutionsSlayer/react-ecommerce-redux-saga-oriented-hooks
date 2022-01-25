@@ -1,20 +1,26 @@
 import React from 'react';
-import './collection-category.styles.scss';
 
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectShopCollection } from '../../redux/shop/shop.selectors';
+import { selectShopCollections } from '../../redux/shop/shop.selectors';
+import { connect } from 'react-redux';
+
+import {
+  CollectionTitle,
+  CollectionPageContainer,
+  CollectionItemsContainer,
+} from './collection.styles';
 
 import CollectionItem from '../../components/collection-item/collection-item.component';
+import { createStructuredSelector } from 'reselect';
 
-const CollectionPage = () => {
+const CollectionPage = ({ collections }) => {
   const { collectionId } = useParams();
-  const collection = useSelector(selectShopCollection(collectionId));
+  const collection = collections[collectionId];
 
   return (
-    <div className='collection-page'>
-      <h2 className='title'>{collection.title}</h2>
-      <div className='items'>
+    <CollectionPageContainer>
+      <CollectionTitle>{collection.title}</CollectionTitle>
+      <CollectionItemsContainer>
         {collection.items.map((item) => (
           <CollectionItem
             className='collection-item'
@@ -22,9 +28,13 @@ const CollectionPage = () => {
             item={item}
           />
         ))}
-      </div>
-    </div>
+      </CollectionItemsContainer>
+    </CollectionPageContainer>
   );
 };
 
-export default CollectionPage;
+const mapStateToProps = createStructuredSelector({
+  collections: selectShopCollections,
+});
+
+export default connect(mapStateToProps, null)(CollectionPage);
